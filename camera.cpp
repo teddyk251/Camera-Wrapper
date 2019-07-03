@@ -1,8 +1,10 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/core.hpp"
+#include <iostream>
 
 using namespace cv;
+using namespace std;
 
 class Camera
 {
@@ -19,6 +21,32 @@ class Camera
         cap.set(CV_CAP_PROP_FRAME_HEIGHT,height);
 
 
+    }
+    void openCamera()
+    {
+        if(!cap.isOpened()){
+            cap.open(deviceId);
+        }
+        else 
+        {
+            cout << "Error opening video stream!!!";
+        }
+    }
+    Mat readCamera()
+    {
+        if(cap.isOpened())
+        {
+            Mat image;
+            cap.read(image);
+            return image;
+        }
+    }
+    void closeCamera()
+    {
+        if(cap.isOpened())
+        {
+            cap.release();
+        }
     }
     
 };
