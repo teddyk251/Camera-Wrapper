@@ -48,5 +48,17 @@ class Camera
             cap.release();
         }
     }
+    void saveImage()
+    {
+        for(;;)
+        {
+            Mat image = readCamera();
+            imwrite("image.png",image);
+            imshow("Camera",image);
+            if(waitKey(30) >= 0)
+                break;
+        }
+        destroyAllWindows();
+    }
     
 };
