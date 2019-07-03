@@ -11,30 +11,35 @@ class Camera
     private:
     int deviceId;
     VideoCapture cap;
-    
-    public:
+    static Camera* instance;
+
     Camera(int device=0,double width=300, double height=300)
     {
+        
         deviceId = device;
-        VideoCapture cap(device);
+        VideoCapture cap1(device);
+        this->cap = cap1;
         cap.set(CV_CAP_PROP_FRAME_WIDTH,width);
         cap.set(CV_CAP_PROP_FRAME_HEIGHT,height);
-
-
+    }
+    
+    public:
+    static Camera* getInstance(int device=0, double width=300, double height=300){
+        if(!instance)
+        {
+            instance = new Camera(device,width,height);
+            return instance;
+        }
     }
     void openCamera()
     {
-        if(!cap.isOpened()){
+        if(!this->cap.isOpened()){
             cap.open(deviceId);
-        }
-        else 
-        {
-            cout << "Error opening video stream!!!";
         }
     }
     Mat readCamera()
     {
-        if(cap.isOpened())
+        if(this->cap.isOpened())
         {
             Mat image;
             cap.read(image);
@@ -43,7 +48,7 @@ class Camera
     }
     void closeCamera()
     {
-        if(cap.isOpened())
+        if(this->cap.isOpened())
         {
             cap.release();
         }
